@@ -164,17 +164,16 @@ async def handle_reply(request: ReplyRequest):
 
 @app.on_event("startup")
 async def startup():
-    """Load dataset on startup"""
-    logger.info("Loading expanded dataset...")
+    """Load dataset and category guidelines on startup"""
+    logger.info("🚀 Starting Vera Message Engine...")
     
-    # Try expanded first, fallback to seed
-    if os.path.exists("dataset/expanded"):
-        context_manager.load_dataset("dataset/expanded")
-    elif os.path.exists("dataset"):
-        logger.info("Expanded dataset not found, using seed data")
-        context_manager.load_dataset("dataset")
-    else:
-        logger.warning("No dataset found - running with empty context")
+    # Load category guidelines
+    logger.info("Loading category guidelines...")
+    composer.load_category_guidelines()
+    
+    # Load dataset
+    logger.info("Loading expanded dataset...")
+    context_manager.load_dataset("dataset")
     
     logger.info("✓ Ready to receive context and compose messages")
 
