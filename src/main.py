@@ -7,21 +7,23 @@ from typing import Optional, Dict, Any
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from src.composer import MessageComposer
-from src.context_manager import ContextManager
-
-# Configure logging
+# Configure logging FIRST
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
+# Create FastAPI app BEFORE importing other modules
 app = FastAPI(
     title="Vera Message Engine",
     version="1.0.0",
     description="AI-powered merchant engagement bot for magicpin"
 )
+
+# NOW import after app is created
+from src.composer import MessageComposer
+from src.context_manager import ContextManager
 
 # Initialize global state
 context_manager = ContextManager()
